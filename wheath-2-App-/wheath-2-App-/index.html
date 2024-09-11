@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="x-icon" href=".\images\weather-app.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Forcast</title>
+    <!-- <link rel="stylesheet" href="C:\Users\shett\Desktop\wheath project\style.css"> -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="cards">
+      <div class="search">
+        <input
+          type="text"
+          placeholder="Enter the Name of place"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button>
+          <img id="search" src=".\images\search.png" />
+        </button>
+      </div>
+      <div class="weather">
+        <h1 class="temp">---</h1>
+        <h2 class="city">--</h2>
+        <figure>
+          <img
+            id="weatherIcon"
+            height="70px"
+            width="70px"
+            src=""
+            alt="weatherIcon"
+          />
+        </figure>
+        <h3 id="weather_description"></h3>
+        <div class="details">
+          <div class="col">
+            <img src=".\images\humidity.png" alt="" />
+            <div>
+              <p class="humidity">--</p>
+              <p>Humidity</p>
+            </div>
+          </div>
+          <div class="col">
+            <img src=".\images\wind.png" alt="" />
+            <div>
+              <p class="wind">---</p>
+              <p>Wind speed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const apikey = "c6731c0b4589d3b827a27e4b79c78f94";
+      const api =
+        "https://api.openweathermap.org/data/2.5/weather?&units=metric&q=";
+
+      const searchbox = document.querySelector(".search input");
+      const searchbtn = document.querySelector(".search button");
+      //   const weatherIcon = (document.querySelector(".weather").style.display =
+      //     "block");
+      let weather_icon = document.querySelector("#weatherIcon");
+      let weather_desc = document.querySelector("#weather_description");
+
+      async function checkwheather(city) {
+        const response = await fetch(api + city + `&appid=${apikey}`);
+        var data = await response.json();
+
+        console.log(data);
+
+        weather_desc.innerText = data.weather[0].description;
+        icon = data.weather[0].icon;
+        weather_icon.src = `https://openweathermap.org/img/wn/${icon}.png`;
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML =
+          Math.round(data.main.temp) + "°C";
+        document.querySelector(".humidity").innerHTML =
+          data.main.humidity + "%";
+        document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+      }
+
+      searchbtn.addEventListener("click", () => {
+        checkwheather(searchbox.value);
+      });
+      checkwheather("Kundapura");
+    </script>
+  </body>
+  `
+</html>
